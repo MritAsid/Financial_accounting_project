@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>إضافة/تسديد مبلغ</title>
+    <link rel="stylesheet" href="css/three.css">
+</head>
+<body>
+<header>
+    <h1>إضافة أو تسديد مبلغ</h1>
+<ul>
+        <li style = "background-color: #C2185B;"><a href="index.html" > الصفحة الرئيسية </a></li>
+
+        <li><a href="add_delete.html">إضافة/حذف عميل</a></li>
+        <li><a href="search.html">البحث عن عميل</a></li>
+    </ul>
+</header>
+
+<div class="container twostail transpag">
+    
+
+<div class="box trans">
+<form id="transactionForm">
+        <label for="name">اسم العميل:</label>
+        <input type="text" id="name" required><br><br>
+        <div id="autocomplete" class="autocomplete-list"></div>
+
+        <label for="amount">المبلغ:</label>
+        <input type="number" id="amount" required><br><br>
+
+        <label for="type">نوع العملية:</label>
+        <select id="type" required>
+            <option value="add">إضافة مبلغ</option>
+            <option value="pay">تسديد مبلغ</option>
+        </select><br><br>
+
+        <label for="details">تفاصيل العملية:</label>
+        <input type="text" id="details" required><br><br>
+
+        <button type="submit">إرسال</button>
+    </form>
+
+</div>
+</div>
+
+<script>
+    document.getElementById('transactionForm').addEventListener('submit', function(event) {
+        event.preventDefault();
+        
+        const name = document.getElementById('name').value;
+        const amount = parseFloat(document.getElementById('amount').value);
+        const type = document.getElementById('type').value;
+        const details = document.getElementById('details').value;
+
+        // الحصول على التاريخ والوقت الحاليين وتنسيق التاريخ بالشكل المطلوب (YYYY/MM/DD)
+        const currentDate = new Date();
+        const formattedDate = currentDate.getFullYear() + '/' + 
+                              String(currentDate.getMonth() + 1).padStart(2, '0') + '/' + 
+                              String(currentDate.getDate()).padStart(2, '0');
+        const formattedTime = currentDate.toLocaleTimeString('ar-EG', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+
+        // دمج التاريخ والوقت معًا
+        const date = formattedDate + ' ' + formattedTime;
+
+        // تخزين البيانات في LocalStorage
+        let transactions = JSON.parse(localStorage.getItem('transactions')) || {};
+        if (!transactions[name]) transactions[name] = [];
+
+        transactions[name].push({ amount, type, details, date });
+
+        localStorage.setItem('transactions', JSON.stringify(transactions));
+        alert('تم تسجيل العملية');
+    });
+</script>
+
+</body>
+</html>

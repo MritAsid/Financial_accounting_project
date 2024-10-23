@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>إضافة أو حذف عميل</title>
+    <!-- <link rel="stylesheet" href="style.css"> -->
+    <link rel="stylesheet" href="css/three.css">
+</head>
+<body>
+
+        <header>
+      <h1>إضافة عميل</h1>
+
+
+<ul>
+        <li style = "background-color: #C2185B;"><a href="index.html" > الصفحة الرئيسية </a></li>
+
+        <li><a href="search.html"> البحث عن عميل  </a></li>
+        <li><a href="transaction.html"> إضافة أو تسديد مبلغ  </a></li>
+    </ul>
+</header>
+
+<div class="container twostail">
+
+   <div class="box ">
+    <h4>اضافة عميل</h4>
+
+     <form id="addCustomerForm">
+        <label for="name">اسم العميل  :</label>
+        <input type="text" id="name" required>
+        <button type="submit">إضافة عميل</button>
+    </form>
+   </div>
+
+    <div class="box">
+    <h4>حذف عميل</h4>
+
+        <form id="deleteCustomerForm">
+        <label for="deleteName"> اسم العميل  :  </label>
+        <input type="text" id="deleteName" required>
+        <button type="submit">حذف عميل</button>
+    </form>
+    </div>
+    
+</div>
+
+
+
+    <script>
+        const customers = JSON.parse(localStorage.getItem('customers')) || [];
+
+        document.getElementById('addCustomerForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const name = document.getElementById('name').value;
+            if (!customers.includes(name)) {
+                customers.push(name);
+                localStorage.setItem('customers', JSON.stringify(customers));
+                alert('تم إضافة العميل');
+            } else {
+                alert('العميل موجود بالفعل');
+            }
+        });
+
+        document.getElementById('deleteCustomerForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const name = document.getElementById('deleteName').value;
+            const index = customers.indexOf(name);
+            if (index > -1) {
+                customers.splice(index, 1);
+                localStorage.setItem('customers', JSON.stringify(customers));
+                alert('تم حذف العميل');
+            } else {
+                alert('العميل غير موجود');
+            }
+        });
+    </script>
+</body>
+</html>
